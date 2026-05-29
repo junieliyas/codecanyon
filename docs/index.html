@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Berekon TG Marketing — Documentation v2.0</title>
+<style>
+/* ── Reset ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.7; font-size: 15px; }
+a { color: #2aabee; text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; border-radius: 8px; }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+nav {
+  width: 268px;
+  flex-shrink: 0;
+  background: #0d1526;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 0 0 32px;
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b transparent;
+}
+.nav-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 8px;
+}
+.nav-logo h2 { font-size: 15px; font-weight: 800; color: #f1f5f9; letter-spacing: -0.02em; }
+.nav-logo .ver { font-size: 11px; color: #2aabee; font-weight: 600; letter-spacing: 0.04em; margin-top: 2px; }
+nav ul { list-style: none; padding: 0 10px; }
+nav ul li a {
+  display: block;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #64748b;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+nav ul li a:hover { background: rgba(42,171,238,0.1); color: #2aabee; text-decoration: none; }
+.nav-section {
+  font-size: 10px;
+  font-weight: 700;
+  color: #334155;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 18px 14px 6px;
+}
+.nav-support {
+  margin: 16px 10px 0;
+  background: rgba(42,171,238,0.08);
+  border: 1px solid rgba(42,171,238,0.2);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.nav-support p { font-size: 11px; color: #64748b; margin: 0 0 6px; }
+.nav-support a { font-size: 12px; font-weight: 700; color: #2aabee; }
+
+/* ── Main ────────────────────────────────────────────────────────── */
+main { flex: 1; padding: 48px 64px 80px; max-width: 900px; }
+@media (max-width: 820px) {
+  .layout { flex-direction: column; }
+  nav { width: 100%; height: auto; position: static; }
+  main { padding: 32px 24px; }
+}
+
+/* ── Typography ──────────────────────────────────────────────────── */
+h1 { font-size: 30px; font-weight: 800; color: #0f172a; letter-spacing: -0.03em; margin-bottom: 8px; }
+h2 {
+  font-size: 22px; font-weight: 700; color: #0f172a;
+  margin: 56px 0 18px;
+  padding-top: 56px;
+  border-top: 1px solid #e2e8f0;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 24px;
+}
+h2:first-of-type { margin-top: 32px; border-top: none; padding-top: 0; }
+h3 { font-size: 15px; font-weight: 700; color: #1e293b; margin: 28px 0 10px; }
+p  { color: #475569; margin-bottom: 14px; line-height: 1.75; }
+ul, ol { color: #475569; padding-left: 22px; margin-bottom: 14px; }
+li { margin-bottom: 6px; }
+
+/* ── Code ────────────────────────────────────────────────────────── */
+code {
+  font-family: "Cascadia Code", "Fira Code", "Courier New", monospace;
+  font-size: 12.5px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 1px 6px;
+  color: #0369a1;
+}
+pre {
+  background: #0d1526;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+pre code { background: none; border: none; color: #e2e8f0; padding: 0; font-size: 13px; line-height: 1.9; }
+
+/* ── Callouts ────────────────────────────────────────────────────── */
+.note    { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.warn    { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.danger  { background: #fef2f2; border-left: 4px solid #ef4444; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.success { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.note p, .warn p, .danger p, .success p { margin: 0; }
+
+/* ── Tables ──────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 8px; border: 1px solid #e2e8f0; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #374151; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+td { padding: 10px 16px; border-bottom: 1px solid #f1f5f9; color: #475569; vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafafa; }
+
+/* ── Steps ───────────────────────────────────────────────────────── */
+.steps { counter-reset: step; list-style: none; padding: 0; }
+.steps li {
+  counter-increment: step;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 22px;
+  align-items: flex-start;
+}
+.steps li::before {
+  content: counter(step);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #2aabee;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  margin-top: 3px;
+}
+.steps li > div { flex: 1; }
+.steps li strong { display: block; color: #0f172a; font-size: 14px; margin-bottom: 4px; }
+
+/* ── Feature grid ────────────────────────────────────────────────── */
+.feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+@media (max-width: 640px) { .feat-grid { grid-template-columns: 1fr; } }
+.feat-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+}
+.feat-card .fi { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.feat-card h4 { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+.feat-card p  { font-size: 13px; margin: 0; }
+
+/* ── Badges ──────────────────────────────────────────────────────── */
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 5px; letter-spacing: 0.03em; }
+.b-blue   { background: rgba(42,171,238,0.1);  color: #0284c7; border: 1px solid rgba(42,171,238,0.3); }
+.b-green  { background: rgba(34,197,94,0.1);   color: #16a34a; border: 1px solid rgba(34,197,94,0.3); }
+.b-amber  { background: rgba(245,158,11,0.1);  color: #d97706; border: 1px solid rgba(245,158,11,0.3); }
+.b-purple { background: rgba(139,92,246,0.1);  color: #7c3aed; border: 1px solid rgba(139,92,246,0.3); }
+.b-red    { background: rgba(239,68,68,0.1);   color: #dc2626; border: 1px solid rgba(239,68,68,0.3); }
+
+/* ── Hero ────────────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #0d1526 0%, #0f2040 100%);
+  border-radius: 14px;
+  padding: 40px 44px;
+  margin-bottom: 44px;
+}
+.hero h1 { color: #f1f5f9; font-size: 28px; }
+.hero p  { color: #64748b; font-size: 14px; margin: 10px 0 20px; }
+.hero .bdgs { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── Support card ────────────────────────────────────────────────── */
+.support-card {
+  background: linear-gradient(135deg, #0d1526, #0f2040);
+  border-radius: 14px;
+  padding: 28px 32px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  color: #f1f5f9;
+  margin-top: 8px;
+}
+.support-card .si { font-size: 36px; flex-shrink: 0; }
+.support-card h3 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 8px; }
+.support-card p  { font-size: 13px; color: #94a3b8; margin-bottom: 10px; }
+.tg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #2aabee;
+  color: white !important;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: background 0.2s;
+}
+.tg-btn:hover { background: #1a8fd1; }
+
+/* ── Safety grid ─────────────────────────────────────────────────── */
+.safety-rows { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.safety-row {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  padding: 13px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.safety-row .sc { color: #16a34a; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+.safety-row h4 { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
+.safety-row p  { font-size: 12px; color: #64748b; margin: 0; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SIDEBAR                                                         -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-logo">
+    <h2>Berekon TG Marketing</h2>
+    <div class="ver">v2.0 · Documentation</div>
+  </div>
+
+  <ul>
+    <li class="nav-section">Getting Started</li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#activation">License Activation</a></li>
+    <li><a href="#first-run">First-Run Setup</a></li>
+    <li><a href="#add-account">Adding Accounts</a></li>
+
+    <li class="nav-section">Scraping</li>
+    <li><a href="#scraping">New Scrape Job</a></li>
+    <li><a href="#scrape-modes">Source Types</a></li>
+    <li><a href="#filters">Member Filters</a></li>
+    <li><a href="#hidden">Hidden Group Bypass</a></li>
+    <li><a href="#csv-import">CSV Import</a></li>
+
+    <li class="nav-section">Campaigns</li>
+    <li><a href="#campaigns">Overview</a></li>
+    <li><a href="#mass-dm">Mass DM</a></li>
+    <li><a href="#mass-invite">Mass Invite</a></li>
+    <li><a href="#sms">SMS Campaign</a></li>
+
+    <li class="nav-section">Data</li>
+    <li><a href="#results">Results &amp; Search</a></li>
+    <li><a href="#merge">Merge &amp; Export</a></li>
+    <li><a href="#export-format">Export Format</a></li>
+
+    <li class="nav-section">Reference</li>
+    <li><a href="#accounts">Account Manager</a></li>
+    <li><a href="#safety">Anti-Ban Safety</a></li>
+    <li><a href="#settings">Settings</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#changelog">Changelog</a></li>
+    <li><a href="#support">Support</a></li>
+  </ul>
+
+  <div class="nav-support">
+    <p>Need help?</p>
+    <a href="https://t.me/Estjune">💬 @Estjune on Telegram</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  MAIN                                                            -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<main>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Berekon TG Marketing</h1>
+  <p>Telegram member scraper &amp; marketing automation — Mass DM, Mass Invite, SMS campaigns.<br>Runs entirely on your own Windows PC. No cloud. No subscription.</p>
+  <div class="bdgs">
+    <span class="badge b-blue">v2.0</span>
+    <span class="badge b-green">Windows 10/11</span>
+    <span class="badge b-purple">No Python needed</span>
+    <span class="badge b-amber">Anti-Ban Protection</span>
+    <span class="badge b-red">Multi-Account Pool</span>
+  </div>
+</div>
+
+<!-- Feature overview cards -->
+<div class="feat-grid">
+  <div class="feat-card"><span class="fi">🔍</span><div><h4>4-Mode Scraper</h4><p>Groups, Channels, Contacts, and Message Scan to bypass hidden member lists.</p></div></div>
+  <div class="feat-card"><span class="fi">📨</span><div><h4>Mass DM</h4><p>Personalised private messages with <code>{name}</code> template support and safety limits.</p></div></div>
+  <div class="feat-card"><span class="fi">➕</span><div><h4>Mass Invite</h4><p>Add scraped members directly to your Telegram group. Auto-rotates accounts.</p></div></div>
+  <div class="feat-card"><span class="fi">📱</span><div><h4>SMS Campaigns</h4><p>Send bulk SMS via AfroMessage to phone numbers in your scraped list.</p></div></div>
+  <div class="feat-card"><span class="fi">🛡️</span><div><h4>Anti-Ban Engine</h4><p>Daily limits, random delays, PEER_FLOOD auto-stop, FloodWait handling.</p></div></div>
+  <div class="feat-card"><span class="fi">🔄</span><div><h4>Multi-Account Pool</h4><p>Campaigns auto-rotate through multiple accounts when limits are reached.</p></div></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  GETTING STARTED                                                  -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<h2 id="requirements">Requirements</h2>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Requirement</th><th>Detail</th></tr>
+  <tr><td><strong>Operating System</strong></td><td>Windows 10 or Windows 11 (64-bit). macOS and Linux are not supported.</td></tr>
+  <tr><td><strong>Python</strong></td><td><strong>Not required.</strong> The .exe bundles everything — Python runtime, FastAPI, Telethon, and the UI are all packaged inside.</td></tr>
+  <tr><td><strong>Telegram Account</strong></td><td>At least one active Telegram account. For scraping: must already be a member of the groups you want to scrape.</td></tr>
+  <tr><td><strong>Telegram API Credentials</strong></td><td>Free API ID &amp; API Hash from <a href="https://my.telegram.org/apps" target="_blank">my.telegram.org/apps</a>. Takes under 2 minutes.</td></tr>
+  <tr><td><strong>AfroMessage account (optional)</strong></td><td>Required only for SMS campaigns. Get a token at <a href="https://afromessage.com" target="_blank">afromessage.com</a>.</td></tr>
+  <tr><td><strong>Internet connection</strong></td><td>Required for Telegram API communication. All your data stays on your machine.</td></tr>
+</table>
+</div>
+
+<div class="note"><p><strong>Privacy:</strong> All scraped data is stored locally in <code>telescrap.db</code> (SQLite) in the app folder. Nothing is uploaded to any server.</p></div>
+
+
+<!-- ── License Activation ─────────────────────────────────────────── -->
+<h2 id="activation">License Activation</h2>
+
+<p>When you launch <strong>TGMarketing.exe</strong> for the first time, the activation wizard opens automatically. Activation requires a one-time internet connection to verify your purchase.</p>
+
+<ol class="steps">
+  <li>
+    <div>
+      <strong>Find your CodeCanyon purchase code</strong>
+      <p>Check your <strong>Envato purchase confirmation email</strong> — the purchase code is a UUID in the format <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>. You can also find it by logging into your Envato account → Downloads → find this item → "License certificate &amp; purchase code".</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Enter the purchase code in the activation wizard</strong>
+      <p>The <strong>Purchase Code</strong> tab is selected by default. Paste your code into the field.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Click "Activate"</strong>
+      <p>The app contacts Envato to verify your purchase, then saves a local activation. This takes a few seconds and only needs internet once.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>The app opens automatically</strong>
+      <p>All future launches skip the wizard — the activation is remembered on this machine.</p>
+    </div>
+  </li>
+</ol>
+
+<div class="note">
+  <p><strong>Each purchase = one device.</strong> Your license is locked to the machine where you first activated it. No internet is needed after the initial activation.</p>
+</div>
+
+<div class="warn">
+  <p><strong>Switching computers?</strong> Delete <code>license.dat</code> from the app folder on the old machine, then re-activate on the new machine using the same purchase code. Contact <a href="https://t.me/Estjune">@Estjune</a> on Telegram if you run into any issues.</p>
+</div>
+
+
+<!-- ── First-Run Setup ────────────────────────────────────────────── -->
+<h2 id="first-run">First-Run Setup — Telegram API Credentials</h2>
+
+<p>After activation, a one-time setup wizard asks for your Telegram API credentials. These are stored locally in a <code>.env</code> file and are never shared.</p>
+
+<ol class="steps">
+  <li>
+    <div>
+      <strong>Go to <a href="https://my.telegram.org/apps" target="_blank">my.telegram.org/apps</a></strong>
+      <p>Log in using your Telegram phone number. Telegram will send you a verification code.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Create an application</strong>
+      <p>Click "Create new application". Fill in any App title and short name. Platform: <em>Other</em>. Click "Create application".</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Copy your API ID and API Hash</strong>
+      <p>You'll see them on the page. Paste the <strong>API ID</strong> (a number) and <strong>API Hash</strong> (a hex string) into the wizard fields.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Click "Save &amp; Launch"</strong>
+      <p>The app saves the credentials and opens the main interface.</p>
+    </div>
+  </li>
+</ol>
+
+<div class="note"><p>You only do this once. If you ever need to change the credentials, edit the <code>.env</code> file in the app folder.</p></div>
+
+
+<!-- ── Adding Accounts ────────────────────────────────────────────── -->
+<h2 id="add-account">Adding Telegram Accounts</h2>
+
+<p>Go to <strong>Accounts → Add Account</strong> to authenticate a Telegram phone number. Each account creates a local session file used for scraping and campaigns.</p>
+
+<ol class="steps">
+  <li>
+    <div>
+      <strong>Enter the phone number</strong>
+      <p>Use international format, e.g. <code>+251912345678</code> or <code>+1 555 0100</code>.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Click "Send Code"</strong>
+      <p>Telegram sends a verification OTP to that phone or the Telegram app on that device.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Enter the OTP</strong>
+      <p>Paste the code from Telegram. If the account has two-factor authentication (2FA) enabled, you'll be prompted for the 2FA password next.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Account appears as "active"</strong>
+      <p>The session is saved locally. You can now use this account for scraping and campaigns.</p>
+    </div>
+  </li>
+</ol>
+
+<div class="warn">
+  <p><strong>Recommendation:</strong> Use accounts that have a history in Telegram — at least a few weeks old with prior group activity. Brand-new accounts are more likely to trigger Telegram's spam detection during mass DM/invite campaigns.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SCRAPING                                                         -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<h2 id="scraping">New Scrape Job</h2>
+
+<p>Click <strong>New Scrape</strong> in the sidebar. The wizard has three steps: Source → Filters → Config.</p>
+
+<h2 id="scrape-modes">Source Types</h2>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Source</th><th>When to use</th><th>What it extracts</th></tr>
+  <tr>
+    <td><strong>Group</strong></td>
+    <td>Standard or supergroup with a visible member list</td>
+    <td>Full member list — user ID, username, name, phone (if shared with you)</td>
+  </tr>
+  <tr>
+    <td><strong>Channel</strong></td>
+    <td>Broadcast channel with visible subscribers</td>
+    <td>Subscriber list</td>
+  </tr>
+  <tr>
+    <td><strong>Contacts</strong></td>
+    <td>Type <code>contacts</code> in the username field — exports your saved Telegram contacts</td>
+    <td>Your contact list including phone numbers</td>
+  </tr>
+  <tr>
+    <td><strong>Msg Scan</strong></td>
+    <td>Groups/channels that hide their member list, or when you select it manually</td>
+    <td>Everyone who posted a message or reacted to a post in that chat</td>
+  </tr>
+</table>
+</div>
+
+<p>Paste the target in any of these formats:</p>
+<pre><code>@username
+https://t.me/username
+https://t.me/+invite_hash_here
+contacts</code></pre>
+
+<div class="note"><p>The app automatically normalises any URL or username format — you don't need to worry about adding or removing the <code>@</code> sign.</p></div>
+
+<p>If a standard Group/Channel scrape encounters a hidden member list mid-run, it <strong>automatically falls back</strong> to Msg Scan mode without any user action.</p>
+
+
+<!-- ── Filters ────────────────────────────────────────────────────── -->
+<h2 id="filters">Member Filters</h2>
+
+<p>Applied after scraping, before results are saved:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Filter</th><th>What it keeps</th></tr>
+  <tr><td><strong>All members</strong></td><td>Everyone except bot accounts</td></tr>
+  <tr><td><strong>Active only</strong></td><td>Users who are online, recently active, active last week, or offline within the last 30 days</td></tr>
+  <tr><td><strong>Has username</strong></td><td>Only users with a public @username — guaranteed reachable by username in DM campaigns</td></tr>
+  <tr><td><strong>Has phone</strong></td><td>Only users whose phone number is visible to you (requires mutual contact)</td></tr>
+</table>
+</div>
+
+<h3>Config options</h3>
+<ul>
+  <li><strong>Max members:</strong> Set a cap. Use <code>0</code> for no limit (scrape all available members).</li>
+  <li><strong>Request delay:</strong> Seconds between API page fetches. Default 1.5s is safe. Lower values are faster but increase flood-ban risk.</li>
+  <li><strong>Account to use:</strong> Select which of your authenticated accounts performs the scrape.</li>
+</ul>
+
+
+<!-- ── Hidden Group Bypass ────────────────────────────────────────── -->
+<h2 id="hidden">Hidden Group Bypass — Message Scan</h2>
+
+<p>Many supergroups restrict who can see the member list. The tool handles this with two layered techniques:</p>
+
+<ol>
+  <li>
+    <strong>Message history scan</strong> — iterates through every message ever posted in the chat and records each unique sender. Anyone who has typed even one message is captured.
+  </li>
+  <li>
+    <strong>Reactions scan</strong> — after the message scan, checks the 100 most recent posts for emoji reactions. Every user who reacted to any of those posts is added to the results, even if they never posted a message.
+  </li>
+</ol>
+
+<p>This combination finds active members that standard participant listing cannot reach.</p>
+
+<div class="warn">
+  <p><strong>Limitation:</strong> Silent lurkers who have never posted or reacted cannot be discovered through Msg Scan. This method finds <em>participants</em>, not the full member list.</p>
+</div>
+
+
+<!-- ── CSV Import ─────────────────────────────────────────────────── -->
+<h2 id="csv-import">CSV Import</h2>
+
+<p>Already have a contact list? Import it directly without scraping. Go to <strong>History</strong> and look for the import button, or use the <strong>Import CSV</strong> option.</p>
+
+<p>The importer auto-detects columns by header name. It recognises the following header names:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Field</th><th>Accepted column names</th></tr>
+  <tr><td>Telegram ID</td><td><code>id</code>, <code>user_id</code>, <code>tg_id</code>, <code>telegram_id</code>, <code>uid</code></td></tr>
+  <tr><td>Phone</td><td><code>phone</code>, <code>mobile</code>, <code>tel</code>, <code>number</code>, <code>phonenumber</code></td></tr>
+  <tr><td>Username</td><td><code>username</code>, <code>user</code>, <code>handle</code>, <code>telegram</code></td></tr>
+  <tr><td>Full name</td><td><code>name</code>, <code>full_name</code>, <code>fullname</code>, <code>display_name</code></td></tr>
+  <tr><td>First name</td><td><code>first_name</code>, <code>firstname</code>, <code>first</code>, <code>fname</code></td></tr>
+  <tr><td>Last name</td><td><code>last_name</code>, <code>lastname</code>, <code>last</code>, <code>lname</code></td></tr>
+</table>
+</div>
+
+<div class="note"><p>At least one of <strong>Phone</strong>, <strong>Username</strong>, or <strong>Telegram ID</strong> must be present. Rows missing all three are skipped. The import creates a job entry in History so you can run campaigns against it like any scraped list.</p></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  CAMPAIGNS                                                        -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<h2 id="campaigns">Campaigns — Overview</h2>
+
+<p>Go to <strong>Campaigns → New Campaign</strong>. You need at least one completed scrape job (or imported CSV) as the audience source.</p>
+
+<p>Three campaign types are available:</p>
+
+<div class="feat-grid">
+  <div class="feat-card"><span class="fi">💬</span><div><h4>Mass DM</h4><p>Send private Telegram messages to scraped users.</p></div></div>
+  <div class="feat-card"><span class="fi">➕</span><div><h4>Mass Invite</h4><p>Add users directly to a Telegram group where you are admin.</p></div></div>
+  <div class="feat-card"><span class="fi">📲</span><div><h4>SMS Campaign</h4><p>Send bulk SMS via AfroMessage to phone numbers in your list.</p></div></div>
+  <div class="feat-card"><span class="fi">🔄</span><div><h4>Multi-Account Pool</h4><p>Add multiple accounts — campaigns auto-switch when a limit is hit.</p></div></div>
+</div>
+
+<p>All campaigns show a real-time activity log via WebSocket. You can cancel any running campaign at any time.</p>
+
+
+<!-- ── Mass DM ─────────────────────────────────────────────────────── -->
+<h2 id="mass-dm">Mass DM Campaign</h2>
+
+<p>Sends a private Telegram message to every user in the selected scrape job.</p>
+
+<h3>Message template</h3>
+<p>Use these placeholders — they are replaced with each user's actual data at send time:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Placeholder</th><th>Replaced with</th></tr>
+  <tr><td><code>{name}</code></td><td>User's first name (falls back to username or "there" if unknown)</td></tr>
+  <tr><td><code>{username}</code></td><td>User's @username (e.g. <code>@johndoe</code>)</td></tr>
+</table>
+</div>
+
+<p>Example message:</p>
+<pre><code>Hi {name}! 👋
+
+We noticed you're part of the crypto community.
+Check out our premium signals group — we post 5 setups a day.
+
+👉 https://t.me/yourgroup</code></pre>
+
+<h3>Default safety settings</h3>
+<div class="table-wrap">
+<table>
+  <tr><th>Setting</th><th>Default</th><th>Safe maximum</th></tr>
+  <tr><td>Daily DM limit</td><td>40 / account / day</td><td>40 — do not exceed without extensive account warming</td></tr>
+  <tr><td>Min delay</td><td>60 seconds</td><td>—</td></tr>
+  <tr><td>Max delay</td><td>180 seconds</td><td>—</td></tr>
+</table>
+</div>
+
+<div class="warn"><p>Targets are users with a <code>username</code> or a known <code>tg_id</code>. Users with neither are automatically skipped by the campaign engine.</p></div>
+
+
+<!-- ── Mass Invite ────────────────────────────────────────────────── -->
+<h2 id="mass-invite">Mass Invite Campaign</h2>
+
+<p>Adds scraped users directly to a Telegram group or channel using the official <code>InviteToChannel</code> API.</p>
+
+<h3>Requirements for Mass Invite</h3>
+<ul>
+  <li>The account running the campaign must be an <strong>admin</strong> of the target group.</li>
+  <li>The target group must accept new members (not closed/private without invite links).</li>
+  <li>Targets must have a known <code>tg_id</code> — users without one are skipped.</li>
+</ul>
+
+<h3>Default safety settings</h3>
+<div class="table-wrap">
+<table>
+  <tr><th>Setting</th><th>Default</th><th>Safe maximum</th></tr>
+  <tr><td>Daily invite limit</td><td>30 / account / day</td><td>30</td></tr>
+  <tr><td>Min delay</td><td>45 seconds</td><td>—</td></tr>
+  <tr><td>Max delay</td><td>120 seconds</td><td>—</td></tr>
+</table>
+</div>
+
+<p>Automatically skipped users (counted as "failed", campaign continues):</p>
+<ul>
+  <li>User has privacy restrictions</li>
+  <li>User's account is deactivated</li>
+  <li>User is already banned from the target group</li>
+  <li>User is in too many groups (Telegram's limit)</li>
+</ul>
+
+
+<!-- ── SMS Campaign ───────────────────────────────────────────────── -->
+<h2 id="sms">SMS Campaign</h2>
+
+<p>Sends SMS messages to phone numbers in your scraped list using the <a href="https://afromessage.com" target="_blank">AfroMessage</a> gateway. Designed for the Ethiopian and broader African market.</p>
+
+<h3>Setup</h3>
+<ol class="steps">
+  <li>
+    <div>
+      <strong>Get an AfroMessage account</strong>
+      <p>Register at <a href="https://afromessage.com" target="_blank">afromessage.com</a> and go to Dashboard → API Keys.</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Enter credentials in Settings</strong>
+      <p>In the app, go to <strong>Settings → AfroMessage</strong>. Enter your API Token and optional Sender ID (your registered brand name). Click "Save Afro Settings".</p>
+    </div>
+  </li>
+  <li>
+    <div>
+      <strong>Create an SMS campaign</strong>
+      <p>Go to Campaigns → New Campaign → SMS Campaign. Select a source job that has phone numbers (use "Has phone" filter when scraping, or import a CSV with phone numbers).</p>
+    </div>
+  </li>
+</ol>
+
+<div class="note"><p>SMS campaigns use the <code>{name}</code> placeholder the same way as Mass DM. The default limit is 500 SMS/day with 1–3s between sends.</p></div>
+
+<h3>Scrape the right list for SMS</h3>
+<p>For SMS to work, your source job must contain phone numbers. To maximise phone number coverage:</p>
+<ul>
+  <li>Scrape your own <strong>Contacts</strong> (they always have phone numbers)</li>
+  <li>Use the <strong>"Has phone"</strong> filter when scraping a group</li>
+  <li>Import a CSV that already contains a <code>phone</code> column</li>
+</ul>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  DATA                                                             -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<h2 id="results">Results &amp; Search</h2>
+
+<p>After a scrape completes, click <strong>Results</strong> in the sidebar (or the "View Results" button on the job). The results table shows:</p>
+
+<ul>
+  <li><strong>Telegram ID</strong> — unique numeric ID</li>
+  <li><strong>Username</strong> — @handle (clickable)</li>
+  <li><strong>Full name</strong></li>
+  <li><strong>Phone</strong> — when available</li>
+  <li><strong>Flags</strong> — Standard / Verified / Premium</li>
+  <li><strong>Scraped at</strong> — timestamp</li>
+</ul>
+
+<p>Use the <strong>search box</strong> at the top to filter by username or name. Toggle <strong>Verified</strong> or <strong>Premium</strong> to narrow to those subsets. Results are paginated — 50 rows per page.</p>
+
+<p>Click <strong>Export</strong> to download the full result set as CSV or JSON.</p>
+
+
+<!-- ── Merge ──────────────────────────────────────────────────────── -->
+<h2 id="merge">Merge &amp; Export</h2>
+
+<p>Go to <strong>Merge Files</strong> to combine results from multiple scrape jobs into a single file.</p>
+
+<ol class="steps">
+  <li><div><strong>Select jobs</strong><p>Tick the jobs you want to combine. Click "Select all" to include everything.</p></div></li>
+  <li><div><strong>Toggle deduplication</strong><p><em>Remove duplicates</em> is on by default. It deduplicates by Telegram ID — if the same user appears in two jobs, only the first occurrence is kept.</p></div></li>
+  <li><div><strong>Preview</strong><p>Click <strong>Preview Dedup Count</strong> to see the raw total, unique count, and duplicate count before merging.</p></div></li>
+  <li><div><strong>Choose output format</strong><p>CSV (Excel-compatible) or JSON.</p></div></li>
+  <li><div><strong>Click "Merge &amp; Download"</strong><p>The file is saved to your <strong>Downloads</strong> folder and opened automatically.</p></div></li>
+</ol>
+
+<p>The merged file includes a <code>source</code> column showing which job each user came from (e.g. <code>@crypto_group</code>).</p>
+
+
+<!-- ── Export Format ──────────────────────────────────────────────── -->
+<h2 id="export-format">Export Format Reference</h2>
+
+<h3>CSV columns</h3>
+<pre><code>tg_id, username, first_name, last_name, full_name, phone,
+is_bot, is_verified, is_premium, scraped_at, source</code></pre>
+
+<h3>JSON structure</h3>
+<pre><code>[
+  {
+    "tg_id": 123456789,
+    "username": "johndoe",
+    "first_name": "John",
+    "last_name": "Doe",
+    "full_name": "John Doe",
+    "phone": "+251912345678",
+    "is_bot": 0,
+    "is_verified": 0,
+    "is_premium": 1,
+    "scraped_at": "2026-05-03T08:26:00",
+    "source": "contacts"
+  }
+]</code></pre>
+
+<p>Fields <code>is_bot</code>, <code>is_verified</code>, and <code>is_premium</code> are integers: <code>1</code> = true, <code>0</code> = false.</p>
+<p><code>phone</code> is only populated when the phone is visible to you — this typically means the user is in your Telegram contacts or has chosen to make their number visible.</p>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  REFERENCE                                                        -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<h2 id="accounts">Account Manager</h2>
+
+<p>Go to <strong>Accounts</strong> in the sidebar. Each row shows:</p>
+<ul>
+  <li>Account name and phone number</li>
+  <li>Status badge: <strong>active</strong> (session valid) or <strong>pending</strong></li>
+  <li>Scrapes and campaigns run count</li>
+  <li>Proxy setting (None by default)</li>
+</ul>
+
+<h3>Multi-account pool for campaigns</h3>
+<p>When creating a campaign, you can select <strong>multiple accounts</strong> from the account selector. The campaign engine:</p>
+<ol>
+  <li>Starts with the first account in the pool.</li>
+  <li>Tracks daily actions per account in the database (resets at midnight).</li>
+  <li>Automatically switches to the next account when the current one hits its daily limit or receives a PEER_FLOOD error.</li>
+  <li>Stops the campaign if all accounts in the pool are exhausted.</li>
+</ol>
+
+<div class="note"><p>Daily action counts survive app restarts — they are persisted in <code>telescrap.db</code> and reset at midnight automatically.</p></div>
+
+<h3>Removing an account</h3>
+<p>Click <strong>Remove</strong>. This deletes the session file from disk and removes the account from the database. The action is irreversible — you will need to re-authenticate the phone number to add it again.</p>
+
+
+<!-- ── Anti-Ban ───────────────────────────────────────────────────── -->
+<h2 id="safety">Anti-Ban Safety System</h2>
+
+<p>Every campaign runs through a multi-layer protection engine. All of this is automatic — you do not need to configure it manually beyond setting your preferred limits.</p>
+
+<div class="safety-rows">
+
+  <div class="safety-row">
+    <span class="sc">✓</span>
+    <div>
+      <h4>Daily action limits per account</h4>
+      <p>Mass DM: 40/day. Mass Invite: 30/day. SMS: 500/day. Stored in the database and survive app restarts. Limits reset at midnight.</p>
+    </div>
+  </div>
+
+  <div class="safety-row">
+    <span class="sc">✓</span>
+    <div>
+      <h4>Random jitter delays</h4>
+      <p>Each action waits a random number of seconds between your configured min and max. This mimics human behaviour and avoids the rigid robot pattern that Telegram's spam detection looks for.</p>
+    </div>
+  </div>
+
+  <div class="safety-row">
+    <span class="sc">✓</span>
+    <div>
+      <h4>PEER_FLOOD auto-stop &amp; account rotation</h4>
+      <p>PEER_FLOOD is Telegram's signal that an account is being flagged for spam. When detected, the current account is immediately suspended from the campaign and the next account in the pool takes over. If no accounts remain, the campaign stops.</p>
+    </div>
+  </div>
+
+  <div class="safety-row">
+    <span class="sc">✓</span>
+    <div>
+      <h4>FloodWait handling</h4>
+      <p>When Telegram requests a mandatory wait (e.g. "wait 120 seconds"), the tool waits exactly that long before continuing. If the FloodWait is longer than 5 minutes (300 seconds), the account is treated the same as PEER_FLOOD — rotated out of the pool.</p>
+    </div>
+  </div>
+
+  <div class="safety-row">
+    <span class="sc">✓</span>
+    <div>
+      <h4>Graceful user skipping</h4>
+      <p>Users with privacy restrictions, deactivated accounts, channel bans, or who are in too many groups are silently counted as "failed" and skipped. The campaign does not crash or stop for individual user errors.</p>
+    </div>
+  </div>
+
+  <div class="safety-row">
+    <span class="sc">✓</span>
+    <div>
+      <h4>Immediate cancel</h4>
+      <p>Clicking Cancel on any running campaign stops it cleanly — the current jitter delay is interrupted second-by-second and the campaign status is set to "cancelled".</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="danger">
+  <p><strong>Disclaimer:</strong> Even with these protections, mass DM and invite campaigns carry inherent risk of account restriction. Always use accounts with prior Telegram activity. The authors are not responsible for account restrictions caused by campaign usage. Use responsibly.</p>
+</div>
+
+
+<!-- ── Settings ───────────────────────────────────────────────────── -->
+<h2 id="settings">Settings</h2>
+
+<h3>AfroMessage (SMS Gateway)</h3>
+<p>Enter your AfroMessage API Token and optional Sender ID. Click <strong>Save Afro Settings</strong>. These are written to the local <code>.env</code> file immediately.</p>
+
+<h3>Scraping Defaults</h3>
+<div class="table-wrap">
+<table>
+  <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+  <tr><td>Default Request Delay</td><td>1.5 s</td><td>Seconds between API page fetches during scraping</td></tr>
+  <tr><td>Auto-save Results</td><td>On</td><td>Automatically saves each completed job to History</td></tr>
+  <tr><td>Skip Bots</td><td>On</td><td>Excludes bot accounts from scrape results</td></tr>
+  <tr><td>Skip Deleted Accounts</td><td>On</td><td>Excludes deactivated Telegram accounts</td></tr>
+  <tr><td>Deduplicate Across Jobs</td><td>Off</td><td>When on, skips users whose tg_id already exists in any previous job</td></tr>
+</table>
+</div>
+
+
+<!-- ── FAQ ───────────────────────────────────────────────────────── -->
+<h2 id="faq">Frequently Asked Questions</h2>
+
+<h3>Do I need to install Python?</h3>
+<p>No. The <code>TGMarketing.exe</code> is fully self-contained — it bundles the Python runtime, FastAPI server, Telethon library, and the entire UI. Just double-click and run.</p>
+
+<h3>Why does a group show "Member list is hidden"?</h3>
+<p>Some supergroups restrict the participant list to admins only. Use <strong>Msg Scan</strong> as the source type instead — it reads message history and reactions to discover active members without needing member list access. The tool also falls back to Msg Scan automatically when it encounters a restricted list.</p>
+
+<h3>Can I run multiple campaigns at the same time?</h3>
+<p>It is not recommended. Running parallel campaigns on the same account pool multiplies action counts and increases the risk of PEER_FLOOD. Run campaigns sequentially.</p>
+
+<h3>Will my Telegram account get banned?</h3>
+<p>Scraping is generally very safe. The risk comes from mass DM and invite campaigns. Follow the recommended daily limits (40 DMs, 30 invites per account) and use accounts that have been active on Telegram for at least a few weeks.</p>
+
+<h3>Where is all my data stored?</h3>
+<p>Everything is in the app folder: <code>telescrap.db</code> (scraped members, job history, campaign history), <code>sessions/</code> (Telegram session files), and <code>.env</code> (API credentials). Nothing is uploaded anywhere.</p>
+
+<h3>How do I back up my data?</h3>
+<p>Copy <code>telescrap.db</code> and the <code>sessions/</code> folder to another location. These two items contain all your data and sessions.</p>
+
+<h3>The app window doesn't open after double-clicking</h3>
+<p>Check if another process is using port 8000. If so, end it. Alternatively, wait 10–15 seconds — the server can take a moment to start. The window should appear automatically.</p>
+
+<h3>Can I scrape private groups?</h3>
+<p>You must already be a member of any group you want to scrape. If the group is invite-only and you're not a member, the tool cannot access it.</p>
+
+<h3>How do I update to a new version?</h3>
+<p>Extract the new version to the same folder, overwriting the old <code>TGMarketing.exe</code>. Your <code>.env</code>, <code>telescrap.db</code>, <code>sessions/</code>, and license files are all preserved.</p>
+
+<h3>Can I use a proxy?</h3>
+<p>Not in the current version. Proxy support is planned for a future update. Contact <a href="https://t.me/Estjune">@Estjune on Telegram</a> for custom integration inquiries.</p>
+
+<h3>My license says "machine mismatch"</h3>
+<p>Your purchase code was already activated on a different computer. To move it to this machine: delete <code>license.dat</code> from the app folder, re-launch, and enter your purchase code again. If you need help, contact <a href="https://t.me/Estjune">@Estjune</a> on Telegram.</p>
+
+
+<!-- ── Changelog ─────────────────────────────────────────────────── -->
+<h2 id="changelog">Changelog</h2>
+
+<h3>v2.0 — May 2026 <span class="badge b-green" style="vertical-align:middle; margin-left:6px;">Current</span></h3>
+<ul>
+  <li>Native Windows .exe launcher — no Python installation required</li>
+  <li>RSA license activation system with machine-locking</li>
+  <li>Mass DM campaigns with <code>{name}</code> / <code>{username}</code> templates</li>
+  <li>Mass Invite campaigns with admin-group target</li>
+  <li>SMS campaigns via AfroMessage API</li>
+  <li>Multi-account pool with automatic rotation on daily limit or PEER_FLOOD</li>
+  <li>CSV import — auto-detects columns, creates a job for campaigning</li>
+  <li>Merge &amp; Export — combine multiple jobs, deduplicate, preview count, CSV/JSON</li>
+  <li>Message Scan mode — message history + reaction scanning to bypass hidden member lists</li>
+  <li>Auto-fallback from participant listing to Msg Scan when member list is restricted</li>
+  <li>Contacts scrape — export your own Telegram contacts with phone numbers</li>
+  <li>Member filters: all / active &lt;30 days / has username / has phone</li>
+  <li>Real-time WebSocket progress log for all jobs and campaigns</li>
+  <li>AfroMessage Settings panel with live save</li>
+  <li>Daily action limits persist across restarts and reset at midnight</li>
+</ul>
+
+<h3>v1.0 — 2025</h3>
+<ul>
+  <li>Initial release — CLI-based Telegram member scraper</li>
+  <li>CSV/JSON export, basic account management</li>
+</ul>
+
+
+<!-- ── Support ────────────────────────────────────────────────────── -->
+<h2 id="support">Support</h2>
+
+<p>We provide support through Telegram for the fastest response. For purchase or billing questions, use the Envato support system.</p>
+
+<div class="support-card">
+  <span class="si">💬</span>
+  <div>
+    <h3>Contact us on Telegram</h3>
+    <p>The fastest way to get help. Send a message explaining your issue — typically responded to within a few hours.</p>
+    <a class="tg-btn" href="https://t.me/Estjune" target="_blank">
+      ✈ Message @Estjune on Telegram
+    </a>
+  </div>
+</div>
+
+<div style="height: 20px;"></div>
+
+<p>When reporting an issue, please include:</p>
+<ul>
+  <li>Your Windows version (Win 10 or 11)</li>
+  <li>What you were doing when the problem occurred (scraping / campaign / activation)</li>
+  <li>The exact error message or log line from the activity panel</li>
+  <li>Your Envato purchase code (for license-related issues)</li>
+</ul>
+
+<div class="note"><p>For billing, refunds, or license transfers, contact through the Envato item page. Envato handles all payment-related matters.</p></div>
+
+<hr style="margin: 56px 0 32px; border: none; border-top: 1px solid #e2e8f0;">
+
+<p style="font-size: 12px; color: #94a3b8; text-align: center; line-height: 1.9;">
+  Berekon TG Marketing v2.0 &nbsp;·&nbsp; Developed by <strong>Eshetu Elias</strong><br>
+  Support: <a href="https://t.me/Estjune">@Estjune</a> on Telegram<br>
+  Use responsibly and in compliance with <a href="https://core.telegram.org/api/terms" target="_blank">Telegram's Terms of Service</a>.
+</p>
+
+</main>
+</div>
+</body>
+</html>
